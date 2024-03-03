@@ -22,5 +22,7 @@ void encryptText(const string& inputText, string& encryptedText) {
         int asciiCode = static_cast<int>(ch);
         // Обчислюємо позицію символу в рядку, який вже був зашифрований
         int position = encryptedText.length() % 128;
-
+        // Отримуємо старшу та молодшу ASCII-коду символу
+        int highBits = (asciiCode >> 4) & 0x0F;
+        int lowBits = asciiCode & 0x0F;
 
