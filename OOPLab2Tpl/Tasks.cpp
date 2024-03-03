@@ -26,4 +26,9 @@ void encryptText(const string& inputText, string& encryptedText) {
         int highBits = (asciiCode >> 4) & 0x0F;
         int lowBits = asciiCode & 0x0F;
         bool parityBit = true; // Припустимо, що біт парності завжди true
+        // Формуємо два байти для кожного символу
+        char byte1 = (highBits << 4) | (position >> 3);
+        char byte2 = ((position & 0x07) << 5) | lowBits;
+        byte1 |= (parityBit << 7); // Встановлюємо біт парності
+
 
