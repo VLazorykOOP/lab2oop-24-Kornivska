@@ -52,3 +52,6 @@ void task2() {
 
     // Доповнюємо текст пробілами до 128 символів
     padText(inputText, 128);
+    // Шифруємо текст
+    encryptText(inputText, encryptedText);
+
