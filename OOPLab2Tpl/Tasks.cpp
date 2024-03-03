@@ -50,3 +50,5 @@ void task2() {
     getline(inputFile, inputText);
     inputFile.close();
 
+    // Доповнюємо текст пробілами до 128 символів
+    padText(inputText, 128);
