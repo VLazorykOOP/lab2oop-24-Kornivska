@@ -54,4 +54,15 @@ void task2() {
     padText(inputText, 128);
     // Шифруємо текст
     encryptText(inputText, encryptedText);
+    // Записуємо зашифрований текст у бінарний файл
+    ofstream outputFile(outputFileName, ios::binary);
+    if (!outputFile.is_open()) {
+        cout << "Error: Unable to open file " << outputFileName << " for writing" << endl;
+        return;
+    }
+    outputFile.write(encryptedText.c_str(), encryptedText.size());
+    outputFile.close();
+
+    cout << "Encryption completed successfully. Encrypted text saved to " << outputFileName << endl;
+}
 
