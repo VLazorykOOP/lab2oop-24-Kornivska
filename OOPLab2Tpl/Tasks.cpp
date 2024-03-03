@@ -71,6 +71,12 @@ void task2() {
 void task3() {
     string inputFileName = "input.bin"; // Назва вхідного бінарного файлу
     string outputFileName = "output_decrypted.txt"; // Назва вихідного текстового файлу
+    // Відкриваємо вхідний бінарний файл
+    ifstream inputFile(inputFileName, ios::binary);
+    if (!inputFile.is_open()) {
+        cout << "Error: Unable to open file " << inputFileName << endl;
+        return;
+    }
 
 
 
