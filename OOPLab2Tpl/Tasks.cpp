@@ -35,4 +35,8 @@ void encryptText(const string& inputText, string& encryptedText) {
         encryptedText += byte2;
     }
 }
+// Вказуються шляхи до вхідного текстового файлу та файлу для збереження зашифрованого тексту 
+void task2() {
+    string inputFileName = "D:\\visual studio\\ООП\\лаб2\\input.txt";
+    string outputFileName = "output.bin";
 
