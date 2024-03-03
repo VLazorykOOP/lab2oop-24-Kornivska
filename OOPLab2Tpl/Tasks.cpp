@@ -1,4 +1,6 @@
 ﻿#include <iostream>
+#include <fstream>
+#include <string>
 using namespace std;
 void task1() {
     int a, b, c, d;
@@ -37,7 +39,7 @@ void encryptText(const string& inputText, string& encryptedText) {
 }
 // Вказуються шляхи до вхідного текстового файлу та файлу для збереження зашифрованого тексту 
 void task2() {
-    string inputFileName = "D:\\visual studio\\ООП\\лаб2\\input.txt";
+    string inputFileName = "D:\\visual studio\\ООП\\lab2.tt\\inputt.txt";
     string outputFileName = "output.bin";
     // строка для зберігання введеного тексту та зашифрованого тексту
     string inputText, encryptedText;
@@ -65,4 +67,31 @@ void task2() {
 
     cout << "Encryption completed successfully. Encrypted text saved to " << outputFileName << endl;
 }
+// Зчитування зашифрованого тексту з бінарного файлу, розшифрування та збереження в інший файл
+void task3() {
+    string inputFileName = "input.bin"; // Назва вхідного бінарного файлу
+    string outputFileName = "output_decrypted.txt"; // Назва вихідного текстового файлу
+
+
+
+int main() {
+    int task;
+    cout << "Enter task number (1,2,3): ";
+    cin >> task;
+    switch (task) {
+    case 1:
+        task1();
+        break;
+    case 2:
+        task2();
+        break;
+    case 3:
+        task3();
+        break;
+    default:
+        cout << "Error\n";
+    }
+    return 0;
+}
+
 
