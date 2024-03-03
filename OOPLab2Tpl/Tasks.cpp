@@ -39,4 +39,14 @@ void encryptText(const string& inputText, string& encryptedText) {
 void task2() {
     string inputFileName = "D:\\visual studio\\ООП\\лаб2\\input.txt";
     string outputFileName = "output.bin";
+    // строка для зберігання введеного тексту та зашифрованого тексту
+    string inputText, encryptedText;
+    // Зчитуємо текст з текстового файлу
+    ifstream inputFile(inputFileName);
+    if (!inputFile.is_open()) {
+        cout << "Error: Unable to open file " << inputFileName << endl;
+        return;
+    }
+    getline(inputFile, inputText);
+    inputFile.close();
 
