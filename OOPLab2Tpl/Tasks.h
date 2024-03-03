@@ -21,5 +21,16 @@ int main() {
     }
     return 0;
 }
+void MenuTask()
+{
+    cout << "     Menu Task   \n";
+    cout << "    1.  Calculation of expressions using bitwise operations  \n";
+    cout << "    2.  Data encryption using bitwise operations \n";
+    cout << "    3.  Data encryption using structures with bit fields \n";
+    cout << "    4.  The problem of using bitwise operations \n";
+    cout << "    5.  Examples of problems using bitwise operations \n";
+    cout << "    6.  Exit \n";
+}
+
 
 
