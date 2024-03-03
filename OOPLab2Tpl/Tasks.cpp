@@ -25,4 +25,5 @@ void encryptText(const string& inputText, string& encryptedText) {
         // Отримуємо старшу та молодшу ASCII-коду символу
         int highBits = (asciiCode >> 4) & 0x0F;
         int lowBits = asciiCode & 0x0F;
+        bool parityBit = true; // Припустимо, що біт парності завжди true
 
