@@ -77,6 +77,9 @@ void task3() {
         cout << "Error: Unable to open file " << inputFileName << endl;
         return;
     }
+    // Зчитуємо зашифрований текст з файлу
+    string encryptedText((istreambuf_iterator<char>(inputFile)), (istreambuf_iterator<char>()));
+    inputFile.close();
 
 
 
