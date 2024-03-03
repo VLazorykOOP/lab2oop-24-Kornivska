@@ -20,5 +20,7 @@ void encryptText(const string& inputText, string& encryptedText) {
     for (char ch : inputText) {
         // Конвертація символу в ASCII-код
         int asciiCode = static_cast<int>(ch);
+        // Обчислюємо позицію символу в рядку, який вже був зашифрований
+        int position = encryptedText.length() % 128;
 
 
