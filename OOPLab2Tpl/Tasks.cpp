@@ -9,12 +9,16 @@ void task1() {
     // Виведення результату
     cout << "Result: " << result << endl;
 }
+ // Функція для доповнення вхідного тексту пробілами до заданої максимальної довжини
 void padText(string& text, int maxLength) {
     while (text.length() < maxLength) {
         text += ' ';
     }
 }
+// 	Цикл, що проходить крізь кожен символ вхідного тексту
 void encryptText(const string& inputText, string& encryptedText) {
     for (char ch : inputText) {
+        // Конвертація символу в ASCII-код
+        int asciiCode = static_cast<int>(ch);
 
 
