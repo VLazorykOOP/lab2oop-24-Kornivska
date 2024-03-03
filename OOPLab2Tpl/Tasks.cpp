@@ -9,5 +9,10 @@ void task1() {
     // Виведення результату
     cout << "Result: " << result << endl;
 }
+void padText(string& text, int maxLength) {
+    while (text.length() < maxLength) {
+        text += ' ';
+    }
+}
 
 
