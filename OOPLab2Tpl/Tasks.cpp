@@ -14,5 +14,7 @@ void padText(string& text, int maxLength) {
         text += ' ';
     }
 }
+void encryptText(const string& inputText, string& encryptedText) {
+    for (char ch : inputText) {
 
 
