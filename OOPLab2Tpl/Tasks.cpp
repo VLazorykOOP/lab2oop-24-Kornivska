@@ -83,6 +83,17 @@ void task3() {
     // Розшифровуємо текст
     string decryptedText;
     decryptText(encryptedText, decryptedText);
+    // Записуємо розшифрований текст у вихідний текстовий файл
+    ofstream outputFile(outputFileName);
+    if (!outputFile.is_open()) {
+        cout << "Error: Unable to open file " << outputFileName << " for writing" << endl;
+        return;
+    }
+    outputFile << decryptedText;
+    outputFile.close();
+
+    cout << "Decryption completed successfully. Decrypted text saved to " << outputFileName << endl;
+}
 
 
 
