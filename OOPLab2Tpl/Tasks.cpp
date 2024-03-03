@@ -80,6 +80,10 @@ void task3() {
     // Зчитуємо зашифрований текст з файлу
     string encryptedText((istreambuf_iterator<char>(inputFile)), (istreambuf_iterator<char>()));
     inputFile.close();
+    // Розшифровуємо текст
+    string decryptedText;
+    decryptText(encryptedText, decryptedText);
+
 
 
 
