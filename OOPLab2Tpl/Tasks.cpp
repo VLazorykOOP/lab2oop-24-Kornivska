@@ -1,108 +1,131 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <string>
+#include <bitset>
+#include <cstring> // Для використання функції strcpy_s
 using namespace std;
+
+short getParity(unsigned int n) {
+    bool parity = 1; // Ініціалізуємо змінну для зберігання парності
+    for (int i = 1; i < 16; i++) { // Перевіряємо кожен біт числа, починаючи з другого
+        if (((n >> i) & 1) == 1) { // Якщо біт дорівнює 1
+            parity = !parity; // Змінюємо парність
+        }
+    }
+    return parity; // Повертаємо значення парності
+}
+
 void task1() {
-    int a, b, c, d;
+    int a = 0, b = 0, c = 0, d = 0; // Ініціалізуємо змінні
     cout << "Enter values for a, b, c, d: ";
-    cin >> a >> b >> c >> d;
-    // Обчислення виразу (37*b)+(((d*31)+(12*a))/2048)-(65*c)+(d*14) без використання множення та ділення
-    int result = (b << 5) + b + ((d << 5) + (a << 3) + (a << 2)) - (c << 6) + c + (d << 4);
-    // Виведення результату
-    cout << "Result: " << result << endl;
+    cin >> a >> b >> c >> d; // Зчитуємо значення змінних з консолі
+    int result = (b << 5) + b + ((d << 5) + (a << 3) + (a << 2)) - (c << 6) + c + (d << 4); // Обчислюємо результат
+    cout << "Result: " << result << endl; // Виводимо результат
 }
- // Функція для доповнення вхідного тексту пробілами до заданої максимальної довжини
-void padText(string& text, int maxLength) {
-    while (text.length() < maxLength) {
-        text += ' ';
-    }
-}
-// 	Цикл, що проходить крізь кожен символ вхідного тексту
-void encryptText(const string& inputText, string& encryptedText) {
-    for (char ch : inputText) {
-        // Конвертація символу в ASCII-код
-        int asciiCode = static_cast<int>(ch);
-        // Обчислюємо позицію символу в рядку, який вже був зашифрований
-        int position = encryptedText.length() % 128;
-        // Отримуємо старшу та молодшу ASCII-коду символу
-        int highBits = (asciiCode >> 4) & 0x0F;
-        int lowBits = asciiCode & 0x0F;
-        bool parityBit = true; // Припустимо, що біт парності завжди true
-        // Формуємо два байти для кожного символу
-        char byte1 = (highBits << 4) | (position >> 3);
-        char byte2 = ((position & 0x07) << 5) | lowBits;
-        byte1 |= (parityBit << 7); // Встановлюємо біт парності
-        // Накопичення зашифрованого тексту по мірі обробки кожного символу вхідного тексту
-        encryptedText += byte1;
-        encryptedText += byte2;
-    }
-}
-// Вказуються шляхи до вхідного текстового файлу та файлу для збереження зашифрованого тексту 
+
 void task2() {
-    string inputFileName = "D:\\visual studio\\ООП\\lab2.tt\\inputt.txt";
-    string outputFileName = "output.bin";
-    // строка для зберігання введеного тексту та зашифрованого тексту
-    string inputText, encryptedText;
-    // Зчитуємо текст з текстового файлу
-    ifstream inputFile(inputFileName);
-    if (!inputFile.is_open()) {
-        cout << "Error: Unable to open file " << inputFileName << endl;
+    char input[128] = ""; // Ініціалізуємо масив для зберігання введеного тексту
+    short symCounter = 0; // Ініціалізуємо лічильник символів
+    cout << "1. Input from file input.txt" << endl; // Виводимо повідомлення про вибір введення з файлу
+    cout << "2. Input from stdin" << endl; // Виводимо повідомлення про вибір введення з консолі
+    cout << "Choose: ";
+    char choose;
+    cin >> choose; // Зчитуємо вибір користувача
+    switch (choose) {
+    case '1': { // Вибрано введення з файлу
+        ifstream inputFile("D:\\visual studio\\ООП\\lab2.OPP.Kornivska\\inputt.txt", ios::in); // Відкриваємо файл для читання
+        if (inputFile.is_open()) { // Якщо файл відкрито успішно
+            while (inputFile.peek() != EOF && symCounter < 128) { // Читаємо символи з файлу поки не кінець файлу або досягнуто максимальну кількість символів
+                char symbol;
+                inputFile.get(symbol);
+                input[symCounter++] = symbol; // Зберігаємо символ у масив
+            }
+            inputFile.close(); // Закриваємо файл
+        }
+        else {
+            cout << "Can't open file" << endl; // Виводимо повідомлення про неможливість відкриття файлу
+            return;
+        }
+        break;
+    }
+    case '2': { // Вибрано введення з консолі
+        cout << "Input text: ";
+        string inp;
+        cin >> inp; // Зчитуємо рядок з консолі
+        symCounter = inp.length(); // Запам'ятовуємо довжину рядка
+        if (symCounter > 128) { // Перевіряємо, чи рядок не перевищує максимальну довжину
+            cout << "Input text is too long." << endl;
+            return;
+        }
+        strcpy_s(input, inp.c_str()); // Копіюємо рядок у масив input
+        break;
+    }
+    default:
+        cout << "Invalid option." << endl; // Виводимо повідомлення про невірний вибір
         return;
     }
-    getline(inputFile, inputText);
-    inputFile.close();
 
-    // Доповнюємо текст пробілами до 128 символів
-    padText(inputText, 128);
-    // Шифруємо текст
-    encryptText(inputText, encryptedText);
-    // Записуємо зашифрований текст у бінарний файл
-    ofstream outputFile(outputFileName, ios::binary);
-    if (!outputFile.is_open()) {
-        cout << "Error: Unable to open file " << outputFileName << " for writing" << endl;
-        return;
+    for (int i = symCounter; i < 128; i++) { // Заповнюємо решту масиву пробілами
+        input[i] = ' ';
     }
-    outputFile.write(encryptedText.c_str(), encryptedText.size());
-    outputFile.close();
 
-    cout << "Encryption completed successfully. Encrypted text saved to " << outputFileName << endl;
+    unsigned short* result = new unsigned short[128]; // Виділяємо пам'ять під масив результатів
+    for (int i = 0; i < 128; i++) { // Шифруємо кожен символ і записуємо результат у масив result
+        result[i] = 0;
+        result[i] = (input[i] >> 4) & 0x0F;
+        result[i] <<= 7;
+        result[i] |= i;
+        result[i] <<= 4;
+        result[i] |= input[i] & 0x0F;
+        result[i] <<= 1;
+        short parity;
+        parity = getParity(result[i]);
+        result[i] |= parity;
+        cout << "Encrypted " << (char)input[i] << " successfully. Result is: " << bitset<16>(result[i]) << endl; // Виводимо зашифрований символ та його результат
+    }
+
+    ofstream outputb("D:\\visual studio\\ООП\\lab2.OPP.Kornivska\\output.bin", ios::out | ios::binary); // Відкриваємо файл для запису результату
+    outputb.write((char*)result, 128 * sizeof(unsigned short)); // Записуємо результат у файл
+    outputb.close(); // Закриваємо файл
+    delete[] result; // Звільняємо пам'ять, виділену для масиву result
 }
-// Зчитування зашифрованого тексту з бінарного файлу, розшифрування та збереження в інший файл
+
 void task3() {
-    string inputFileName = "input.bin"; // Назва вхідного бінарного файлу
-    string outputFileName = "output_decrypted.txt"; // Назва вихідного текстового файлу
-    // Відкриваємо вхідний бінарний файл
-    ifstream inputFile(inputFileName, ios::binary);
-    if (!inputFile.is_open()) {
-        cout << "Error: Unable to open file " << inputFileName << endl;
+    ifstream inputBinary("D:\\visual studio\\ООП\\lab2.OPP.Kornivska\\output.bin", ios::in | ios::binary); // Відкриваємо бінарний файл для читання
+    if (!inputBinary.is_open()) { // Якщо не вдалося відкрити файл
+        cout << "Error: Unable to open input binary file." << endl; // Виводимо повідомлення про помилку
         return;
     }
-    // Зчитуємо зашифрований текст з файлу
-    string encryptedText((istreambuf_iterator<char>(inputFile)), (istreambuf_iterator<char>()));
-    inputFile.close();
-    // Розшифровуємо текст
-    string decryptedText;
-    decryptText(encryptedText, decryptedText);
-    // Записуємо розшифрований текст у вихідний текстовий файл
-    ofstream outputFile(outputFileName);
-    if (!outputFile.is_open()) {
-        cout << "Error: Unable to open file " << outputFileName << " for writing" << endl;
-        return;
-    }
-    outputFile << decryptedText;
-    outputFile.close();
 
-    cout << "Decryption completed successfully. Decrypted text saved to " << outputFileName << endl;
+    unsigned short fromBinary[128] = { 0 }; // Ініціалізуємо масив для зберігання даних, прочитаних з файлу
+    inputBinary.read(reinterpret_cast<char*>(&fromBinary), 128 * sizeof(unsigned short)); // Читаємо дані з файлу у масив
+    inputBinary.close(); // Закриваємо файл
+
+    char result[128] = { 0 }; // Ініціалізуємо масив для зберігання розкодованого тексту
+    for (int i = 0; i < 128; i++) { // Декодуємо кожен елемент з масиву fromBinary та записуємо результат у масив result
+        short parity = (fromBinary[i]) & 1;
+        short lowerChast = (fromBinary[i] >> 1) & 0b1111;
+        short position = (fromBinary[i] >> 5) & 0b1111111;
+        short starshaChast = (fromBinary[i] >> 12) & 0b1111;
+        char symbol = starshaChast << 4 | lowerChast;
+        result[position] = symbol;
+    }
+
+    ofstream out("D:\\visual studio\\ООП\\lab2.OPP.Kornivska\\output_decrypted.txt", ios::out | ios::app); // Відкриваємо файл для запису результату
+    cout << "Printing decrypted array: "; // Виводимо повідомлення про виведення розкодованого тексту
+    for (int i = 0; i < 128; i++) { // Виводимо розкодований текст на екран та записуємо його у файл
+        cout << result[i];
+        out << result[i];
+    }
+    cout << endl;
+    out.close(); // Закриваємо файл
 }
-
-
-
 
 int main() {
     int task;
-    cout << "Enter task number (1,2,3): ";
-    cin >> task;
-    switch (task) {
+    cout << "Enter task number (1, 2, 3): ";
+    cin >> task; // Зчитуємо номер завдання з консолі
+    switch (task) { // Виконуємо відповідну функцію відповідно до вибраного завдання
     case 1:
         task1();
         break;
@@ -113,9 +136,7 @@ int main() {
         task3();
         break;
     default:
-        cout << "Error\n";
+        cout << "Error: Invalid task number." << endl; // Виводимо повідомлення про невірний номер завдання
     }
     return 0;
 }
-
-
